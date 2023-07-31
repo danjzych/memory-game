@@ -6,8 +6,15 @@ const COLORS = [
   "red", "blue", "green", "orange", "purple",
   "red", "blue", "green", "orange", "purple",
 ];
+
 let guesses = 0;
 let matches = 0;
+
+let bestScore;
+if (JSON.parse(localStorage.getItem('bestScore'))) {
+  bestScore = JSON.parse(localStorage.getItem('bestScore'));
+};
+
 
 const colors = shuffle(COLORS);
 createCards(colors);
@@ -44,6 +51,9 @@ function createCards(colors) {
 
   for (let color of colors) {
     const newDiv = document.createElement('div');
+    // const hint = document.createElement('p');
+    // hint.innerText = color
+    // newDiv.appendChild(hint);
 
     newDiv.addEventListener('click', event => {
 
@@ -132,9 +142,14 @@ function checkIfWon() {
       window.alert('Congrats, you won');
     }, 800);
 
+    bestScore = guesses;
+    localStorage.setItem('bestScore', JSON.stringify(bestScore));
+
   };
 }
 
-//if colors.length / 2 === matches, alert user they have won. How to always "watch" this value though?
-//While they haven't won, display game, when they do, hide game and show they won?
 //startGame function + endGame function?
+//easy, medium, and hard modes with 4, 10, and 20 cards
+//make colors random
+
+//game flow: menu screen. Choose difficuly and start => play game => alert when won, and alert if new record => Restart
