@@ -47,7 +47,7 @@ function shuffle(items) {
 
 
 function createCards(colors) {
-  const gameBoard = document.getElementById("game");
+  const gameBoard = document.getElementById("gameContainer");
 
   for (let color of colors) {
     const newDiv = document.createElement('div');
@@ -152,4 +152,4 @@ function checkIfWon() {
 //easy, medium, and hard modes with 4, 10, and 20 cards
 //make colors random
 
-//game flow: menu screen. Choose difficuly and start => play game => alert when won, and alert if new record => Restart
+//game flow: menu screen. Choose difficulty, get player name, and start => play game => alert when won, and alert if new record => Restart

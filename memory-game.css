@@ -1,19 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+:root {
+  --darkweb: #0D0208;
+  --evergreen: #003B00;
+  --lurking: #008F11;
+  --binary: #00FF41;
+  --office: #a7a7a7;
+}
+
+/* from https://www.schemecolor.com/matrix-code-green.php */
 
 @font-face {
   font-family: glitch-goblin;
   src: url('./resources/glitch-goblin-font/GlitchGoblin-2O87v.ttf');
 }
 
-h1 {
-  font-family: 'glitch-goblin';
+html {
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--darkweb);
 }
 
-#game div {
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 4rem;
+  font-family: 'glitch-goblin';
+  margin: 3rem;
+  display: inline-block;
+} #the, #game {
+  background: -webkit-linear-gradient(white, var(--lurking));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} #memory {
+  background: -webkit-linear-gradient(var(--binary), white);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#playerName {
+  color: var(--binary);
+}
+
+/* Gameboard */
+
+#gameContainer {
+  margin: 2.5rem auto;
+  flex-direction: row;
+}
+
+#gameContainer div {
   border: 1px solid black;
   width: 100px;
   height: 100px;
   margin: 20px;
   display: inline-block;
+  background-color: var(--office);
+  border: 2px dashed white;
 }
 
 .red {
