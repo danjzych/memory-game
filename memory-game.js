@@ -79,7 +79,12 @@ function reset() {
 
 function handleCardClick(card, color) {
 
-  if (flippedCount < 2) {
+  let clickStatus = false;
+  if (card.classList.contains(color)) {
+    clickStatus = true;
+  };
+
+  if (flippedCount < 2 && clickStatus === false) {
 
     if (flippedColor === null) {
 
