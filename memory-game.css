@@ -1,4 +1,12 @@
-/* you can add to or change this. */
+
+@font-face {
+  font-family: glitch-goblin;
+  src: url('./resources/glitch-goblin-font/GlitchGoblin-2O87v.ttf');
+}
+
+h1 {
+  font-family: 'glitch-goblin';
+}
 
 #game div {
   border: 1px solid black;

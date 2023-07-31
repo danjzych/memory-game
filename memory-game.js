@@ -2,14 +2,14 @@
 
 /** Memory game: find matching pairs of cards and flip both of them. */
 
-const FOUND_MATCH_WAIT_MSECS = 1000;
 const COLORS = [
   "red", "blue", "green", "orange", "purple",
   "red", "blue", "green", "orange", "purple",
 ];
+let guesses = 0;
+let matches = 0;
 
 const colors = shuffle(COLORS);
-
 createCards(colors);
 
 
@@ -48,6 +48,7 @@ function createCards(colors) {
     newDiv.addEventListener('click', event => {
 
       handleCardClick(event.target, color);
+      updateGuess();
 
     });
 
@@ -55,10 +56,13 @@ function createCards(colors) {
   }
 }
 
-/** Flip a card face-up. */
+/** Variables to track turn status - color, if a card has been flipped, and number of flips to ensure no more than two cards are flipped */
 
 let flippedColor = null;
 let flippedCount = 0;
+
+/** Flip a card face-up. */
+
 function flipCard(card, color) {
   card.className = color;
   flippedCount++;
@@ -75,16 +79,14 @@ function reset() {
   flippedCount = 0;
 }
 
-/** Handle clicking on a card: this could be first-card or second-card. */
+/** Handle clicking on a card. 'guesses' increments with each guess to track score. */
 
 function handleCardClick(card, color) {
 
   let clickStatus = false;
   if (card.classList.contains(color)) {
     clickStatus = true;
-  };
-
-  if (flippedCount < 2 && clickStatus === false) {
+  } else if (flippedCount < 2 && clickStatus === false) {
 
     if (flippedColor === null) {
 
@@ -95,6 +97,10 @@ function handleCardClick(card, color) {
 
       flipCard(card, color);
       reset();
+      guesses++;
+      matches++;
+
+      checkIfWon();
 
     } else if (color !== flippedColor) {
 
@@ -106,10 +112,29 @@ function handleCardClick(card, color) {
                 unFlipCard(card, color);
                 unFlipCard(alreadyFlipped[0], flippedColor);
                 reset();
-              }, 1000)
+              }, 1000);
+      guesses++;
 
     };
 
   };
 
 }
+
+function updateGuess() {
+  document.querySelector('#guessDisplay').innerText = `Guesses: ${guesses}`;
+}
+
+function checkIfWon() {
+  if (colors.length / 2 === matches) {
+
+    setTimeout(() => {
+      window.alert('Congrats, you won');
+    }, 800);
+
+  };
+}
+
+//if colors.length / 2 === matches, alert user they have won. How to always "watch" this value though?
+//While they haven't won, display game, when they do, hide game and show they won?
+//startGame function + endGame function?
