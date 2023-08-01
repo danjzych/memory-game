@@ -113,7 +113,7 @@ function handleCardClick(card, color) {
       guesses++;
       matches++;
 
-      checkIfWon();
+      handleWin();
 
     } else if (color !== flippedColor) {
 
@@ -139,7 +139,7 @@ function updateGuess() {
   document.querySelector('#guessDisplay').innerText = `Guesses: ${guesses}`;
 }
 
-function checkIfWon() {
+function handleWin() {
   if (colors.length / 2 === matches) {
 
     setTimeout(() => {

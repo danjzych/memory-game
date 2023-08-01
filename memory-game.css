@@ -178,3 +178,11 @@ button {
 .green {
   background-color: green;
 }
+
+
+/* Win Screen */
+
+#playAgain {
+  width: 12rem;
+  height: auto;
+}
