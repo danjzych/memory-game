@@ -1,3 +1,5 @@
+/* Global Styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -33,11 +35,30 @@ body {
   height: 100vh;
 }
 
+.goblin {
+  font-family: 'glitch-goblin';
+}
+
+.evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.hide {
+  display: none;
+}
+
+
+/* Header Styles */
+
+header {
+  border-bottom: .15rem solid var(--evergreen);
+  padding-bottom: 2rem;
+}
+
 h1 {
   font-size: 4rem;
-  font-family: 'glitch-goblin';
   margin: 3rem;
-  display: inline-block;
 } #the, #game {
   background: -webkit-linear-gradient(white, var(--lurking));
   -webkit-background-clip: text;
@@ -48,13 +69,77 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
-.evenly {
-  display: flex;
-  justify-content: space-evenly;
-}
-
 #playerName {
   color: var(--binary);
+}
+
+
+/* Menu */
+
+#menu {
+  margin: auto;
+}
+
+h2 {
+  margin: 2.5rem;
+}
+
+p {
+  margin: 1rem;
+}
+
+.instructions {
+  margin: 2rem auto;
+}
+
+form {
+  margin: 3rem;
+}
+
+h3 {
+  margin: 1.15rem;
+}
+
+h4 {
+  margin: .75rem;
+}
+
+input, button {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--office);
+  border-radius: .2rem;
+  text-align: center;
+  margin: .75rem 2rem 1rem;
+} input {
+  color: var(--lurking);
+  padding: .35rem;
+}
+
+button {
+  color: white;
+  padding: 1rem;
+  width: 9rem;
+  height: 3rem;
+  vertical-align: middle;
+  font-size: 1.25rem;
+} button:hover {
+  cursor: pointer;
+  transform: rotate(1deg);
+} button:active {
+  opacity: .65;
+  transform: rotate(0deg);
+} #easy {
+  background-image: linear-gradient(to left top, var(--evergreen), var(--binary) 50%, var(--evergreen))
+} #easy:active {
+  color: var(--lurking);
+} #medium {
+  background-image: linear-gradient(to left top, #544d02, gold 50%, #544d02)
+} #medium:active {
+  color: #949906;
+} #hard {
+  background-image: linear-gradient(to left top, #450308, crimson 50%, #450308)
+} #hard:active {
+  color: #990632;
 }
 
 /* Gameboard */
@@ -70,8 +155,8 @@ h1 {
   height: 100px;
   margin: 20px;
   display: inline-block;
-  background-color: var(--office);
-  border: 2px dashed white;
+  border: 2px dashed var(--office);
+  border-radius: 3px;
 }
 
 .red {

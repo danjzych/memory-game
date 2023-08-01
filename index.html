@@ -8,23 +8,50 @@
 <body>
 
 <header>
-  <h1>
+  <h1 class="goblin">
     <span id="the">The</span> <span id="memory">Memory</span> <span id="game">Game</span>
   </h1>
   <div class="evenly">
     <div>
-      <p id="guessDisplay">Guesses: 0, Player: <span id="playerName">Unnamed Player</span></p>
-
+      <p id="guessDisplay">Guesses: 0</p>
+      <p> Player: <span id="playerName">Unknown Player</span></p>
     </div>
-    <p>Best Score: NaN</p>
+    <p id="bestScore"></p>
   </div>
 </header>
 
+<section id="menu">
+  <h2>Welcome to <span class="goblin">
+    <span id="the">The</span> <span id="memory">Memory</span> <span id="game">Game</span>
+  </span></h2>
+  <div class="instructions">
+    <p>Do you trust what you see? The Memory Game will challenge your memory.</p>
+    <p>Playing the game is simple, winning is not. To play, flip two cards to see if they match.</p>
+    <p>If they do match, they will stay face-up. If not, they will flip back over. Try to remember what colors were where.</p>
+    <p>To begin, simply select your difficult. If you want your best score tracked, leave your name as well.</p>
+  </div>
+  <form>
+    <h3>Choose game settings:</h3>
+    <h4>What is your name?</h4>
+    <input type="text" id="nameInput" placeholder="unknown_player" minlength="1" maxlength="50">
+    <h4>Select your difficulty</h4>
+    <button type="submit" id="easy">
+      easy
+    </button>
+    <button type="submit" id="medium">
+      medium
+    </button>
+    <button type="submit" id="hard">
+      hard
+    </button>
+  </form>
+</section>
 
-<div id="gameContainer" class="evenly">
+<div id="gameContainer" class="evenly hide"></div>
 
+<section id="winScreen" class="hide">
 
-</div>
+</section>
 
 <script src="./memory-game.js"></script>
 

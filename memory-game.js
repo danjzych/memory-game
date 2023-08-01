@@ -13,7 +13,10 @@ let matches = 0;
 let bestScore;
 if (JSON.parse(localStorage.getItem('bestScore'))) {
   bestScore = JSON.parse(localStorage.getItem('bestScore'));
-};
+  document.getElementById('bestScore').innerText = 'Best Score: ' + bestScore;
+} else {
+  document.getElementById('bestScore').innerText = 'Best Score: No Scores Yet';
+}
 
 
 const colors = shuffle(COLORS);
@@ -131,6 +134,7 @@ function handleCardClick(card, color) {
 
 }
 
+let playerName = 'Unknown Player'
 function updateGuess() {
   document.querySelector('#guessDisplay').innerText = `Guesses: ${guesses}`;
 }
