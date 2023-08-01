@@ -58,7 +58,7 @@ header {
 
 h1 {
   font-size: 4rem;
-  margin: 3rem;
+  padding: 3rem;
 } #the, #game {
   background: -webkit-linear-gradient(white, var(--lurking));
   -webkit-background-clip: text;

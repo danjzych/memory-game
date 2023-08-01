@@ -11,16 +11,15 @@ let guesses = 0;
 let matches = 0;
 
 let bestScore;
+let bestName;
 if (JSON.parse(localStorage.getItem('bestScore'))) {
-  bestScore = JSON.parse(localStorage.getItem('bestScore'));
-  document.getElementById('bestScore').innerText = 'Best Score: ' + bestScore;
+  updateBest();
 } else {
   document.getElementById('bestScore').innerText = 'Best Score: No Scores Yet';
 }
 
 
-const colors = shuffle(COLORS);
-createCards(colors);
+let colors = shuffle(COLORS);
 
 
 /** Shuffle array items in-place and return shuffled array. */
@@ -41,16 +40,9 @@ function shuffle(items) {
   return items;
 }
 
-/** Create card for every color in colors (each will appear twice)
- *
- * Each div DOM element will have:
- * - a class with the value of the color
- * - a click event listener for each card to handleCardClick
- */
+/* Create card for every color in colors (each will appear twice)*/
 
-
-function createCards(colors) {
-  const gameBoard = document.getElementById("gameContainer");
+function createCards(colors, gameBoard) {
 
   for (let color of colors) {
     const newDiv = document.createElement('div');
@@ -60,7 +52,7 @@ function createCards(colors) {
 
     newDiv.addEventListener('click', event => {
 
-      handleCardClick(event.target, color);
+      handleCardClick(event.target, color, gameBoard);
       updateGuess();
 
     });
@@ -69,10 +61,12 @@ function createCards(colors) {
   }
 }
 
+
 /** Variables to track turn status - color, if a card has been flipped, and number of flips to ensure no more than two cards are flipped */
 
 let flippedColor = null;
 let flippedCount = 0;
+
 
 /** Flip a card face-up. */
 
@@ -81,20 +75,25 @@ function flipCard(card, color) {
   flippedCount++;
 }
 
+
 /** Flip a card face-down. */
 
 function unFlipCard(card, color) {
   card.classList.remove(color);
 }
 
+
+/* reset turn */
+
 function reset() {
   flippedColor = null;
   flippedCount = 0;
 }
 
+
 /** Handle clicking on a card. 'guesses' increments with each guess to track score. */
 
-function handleCardClick(card, color) {
+function handleCardClick(card, color, gameBoard) {
 
   let clickStatus = false;
   if (card.classList.contains(color)) {
@@ -113,7 +112,7 @@ function handleCardClick(card, color) {
       guesses++;
       matches++;
 
-      handleWin();
+      handleWin(gameBoard);
 
     } else if (color !== flippedColor) {
 
@@ -134,26 +133,90 @@ function handleCardClick(card, color) {
 
 }
 
-let playerName = 'Unknown Player'
+
 function updateGuess() {
   document.querySelector('#guessDisplay').innerText = `Guesses: ${guesses}`;
 }
 
-function handleWin() {
+function handleWin(gameBoard) {
   if (colors.length / 2 === matches) {
 
     setTimeout(() => {
-      window.alert('Congrats, you won');
+      endGame(gameBoard);
+      updateBest();
     }, 800);
 
     bestScore = guesses;
     localStorage.setItem('bestScore', JSON.stringify(bestScore));
-
+    localStorage.setItem('bestName', JSON.stringify(playerName));
   };
 }
 
-//startGame function + endGame function?
+function updateBest() {
+  bestScore = JSON.parse(localStorage.getItem('bestScore'));
+  bestName = JSON.parse(localStorage.getItem('bestName'));
+  document.getElementById('bestScore').innerText = 'Best Score: ' + bestScore + ', ' + bestName;
+}
+
+
+/* Function to "launch game" - Take in player name and difficulty, then hide menu and show gameboard */
+
+let playerName = 'Unknown Player';
+function startGame(gameBoard) {
+
+  const form = document.querySelector('form');
+  form.addEventListener('submit', event => {
+
+    const nameInput = document.querySelector('#nameInput').value;
+    if (nameInput) {
+      playerName = nameInput;
+      document.querySelector('#playerName').innerText = playerName;
+    };
+
+    event.preventDefault();
+
+    const menu = document.querySelector('#menu');
+    menu.classList.add('hide');
+
+    gameBoard.classList.remove('hide');
+    createCards(colors, gameBoard);
+  });
+
+}
+
+function endGame(gameBoard) {
+
+  gameBoard.classList.add('hide');
+  while (gameBoard.firstChild) {
+    gameBoard.removeChild(gameBoard.lastChild);
+  }
+
+  const winScreen = document.querySelector('#winScreen');
+  winScreen.classList.remove('hide');
+
+  const playAgainButton = document.querySelector('#playAgain');
+  playAgainButton.addEventListener('click', event => {
+    winScreen.classList.add('hide');
+
+    const menu = document.querySelector('#menu');
+    menu.classList.remove('hide');
+
+    while (gameBoard.firstChild) {
+      gameBoard.removeChild(gameBoard.lastChild);
+    }
+
+    colors = shuffle(COLORS);
+  })
+
+}
+
 //easy, medium, and hard modes with 4, 10, and 20 cards
 //make colors random
 
-//game flow: menu screen. Choose difficulty, get player name, and start => play game => alert when won, and alert if new record => Restart
+document.addEventListener('DOMContentLoaded', () => {
+
+  const gameBoard = document.getElementById("gameContainer");
+
+  startGame(gameBoard);
+
+})
