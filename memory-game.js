@@ -9,13 +9,14 @@ const COLORS = [
 
 let guesses = 0;
 let matches = 0;
+let playerName = 'Unknown Player';
 
 let bestScore;
 let bestName;
 if (JSON.parse(localStorage.getItem('bestScore'))) {
-  updateBest();
-} else {
-  document.getElementById('bestScore').innerText = 'Best Score: No Scores Yet';
+  bestScore = JSON.parse(localStorage.getItem('bestScore'));
+  bestName = JSON.parse(localStorage.getItem('bestName'));
+  document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
 }
 
 
@@ -146,22 +147,23 @@ function handleWin(gameBoard) {
       updateBest();
     }, 800);
 
-    bestScore = guesses;
-    localStorage.setItem('bestScore', JSON.stringify(bestScore));
-    localStorage.setItem('bestName', JSON.stringify(playerName));
   };
 }
 
 function updateBest() {
-  bestScore = JSON.parse(localStorage.getItem('bestScore'));
-  bestName = JSON.parse(localStorage.getItem('bestName'));
-  document.getElementById('bestScore').innerText = 'Best Score: ' + bestScore + ', ' + bestName;
+
+  if (guesses < bestScore || !bestScore) {
+    bestScore = guesses;
+    bestName = playerName;
+
+    localStorage.setItem('bestScore', JSON.stringify(bestScore));
+    localStorage.setItem('bestName', JSON.stringify(playerName));
+    document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
+  }
 }
 
 
 /* Function to "launch game" - Take in player name and difficulty, then hide menu and show gameboard */
-
-let playerName = 'Unknown Player';
 function startGame(gameBoard) {
 
   const form = document.querySelector('form');
@@ -206,6 +208,9 @@ function endGame(gameBoard) {
     }
 
     colors = shuffle(COLORS);
+
+    guesses = 0;
+    updateGuess();
   })
 
 }
