@@ -216,3 +216,31 @@ button {
   width: 12rem;
   height: auto;
 }
+
+@media only screen and (max-width: 982px) {
+
+  h1 {
+    font-size: 5rem;
+  }
+
+  header p {
+    font-size: 1.25rem;
+  }
+
+  form {
+    margin: 7rem auto
+  }
+
+  input, button, label {
+    font-size: 1.5rem;
+  }
+
+  #gameContainer div {
+    border: 1px solid black;
+    width: 11vw;
+    height: 20vh;
+    margin: 1rem;
+    border: 2px dashed var(--office);
+    border-radius: 3px;
+  }
+}
