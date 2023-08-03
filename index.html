@@ -16,7 +16,9 @@
       <p id="guessDisplay">Guesses: 0</p>
       <p> Player: <span id="playerName">Unknown Player</span></p>
     </div>
-    <p id="bestScore">Best Score: No Scores Yet</p>
+    <div>
+      <p id="bestScore">Best Easy Score: No Scores Yet</p>
+    </div>
   </div>
 </header>
 
@@ -35,14 +37,21 @@
     <h4>What is your name?</h4>
     <input type="text" id="nameInput" placeholder="unknown_player" minlength="1" maxlength="50">
     <h4>Select your difficulty</h4>
-    <button type="submit" id="easy">
-      easy
-    </button>
-    <button type="submit" id="medium">
-      medium
-    </button>
-    <button type="submit" id="hard">
-      hard
+    <div class="radioButton" id="easy">
+      <input type="radio" name="difficulty" value="easy">
+      <label for="easy">Easy</label>
+    </div>
+    <div class="radioButton" id="medium">
+      <input type="radio" name="difficulty" value="medium">
+      <label for="medium">Medium</label>
+    </div>
+    <div class="radioButton" id="hard">
+      <input type="radio" name="difficulty" value="hard">
+      <label for="hard">Hard</label>
+    </div>
+    <br>
+    <button type="submit" id="beginGame">
+      Begin Game
     </button>
   </form>
 </section>

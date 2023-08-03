@@ -42,6 +42,7 @@ body {
 .evenly {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: row;
 }
 
 .hide {
@@ -58,7 +59,7 @@ header {
 
 h1 {
   font-size: 4rem;
-  padding: 3rem;
+  padding: 3rem 3rem 1.75rem;
 } #the, #game {
   background: -webkit-linear-gradient(white, var(--lurking));
   -webkit-background-clip: text;
@@ -104,7 +105,7 @@ h4 {
   margin: .75rem;
 }
 
-input, button {
+/* input, button {
   font-family: 'Courier New', Courier, monospace;
   background-color: var(--office);
   border-radius: .2rem;
@@ -115,7 +116,7 @@ input, button {
   padding: .35rem;
 }
 
-button {
+button, input[type='radio'] {
   color: white;
   padding: 1rem;
   width: 9rem;
@@ -128,7 +129,32 @@ button {
 } button:active {
   opacity: .65;
   transform: rotate(0deg);
-} #easy {
+} */
+
+input, button {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  margin: .75rem 2rem 1rem;
+  background-color: var(--office);
+  border-radius: .2rem;
+} input[type='text'], input[type='text']:autofill {
+  color: var(--lurking);
+  padding: .35rem;
+  box-shadow: inset .1rem .15rem .5rem .25rem grey;
+} input[type='text']:focus {
+  box-shadow: inset -.1rem -.15rem .5rem .01rem var(--darkweb);
+}
+
+.radioButton {
+  display: inline-block;
+  border-radius: .2rem;
+  width: 9rem;
+  height: 3rem;
+  margin: .75rem 2rem 1rem;
+  position: relative;
+}
+
+#easy {
   background-image: linear-gradient(to left top, var(--evergreen), var(--binary) 50%, var(--evergreen))
 } #easy:active {
   color: var(--lurking);
@@ -140,6 +166,54 @@ button {
   background-image: linear-gradient(to left top, #450308, crimson 50%, #450308)
 } #hard:active {
   color: #990632;
+}
+
+.radioButton:hover, button:hover {
+  cursor: pointer;
+  transform: rotate(1deg);
+  opacity: .9;
+} .radioButton:active, button:active {
+  opacity: .65;
+  transform: rotate(-1deg);
+}
+
+input[type='radio'] {
+  position: absolute;
+  left: 0;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 2;
+  opacity: 0;
+} input[type='radio']:checked ~ label {
+  color: var(--evergreen);
+  background-color: lightskyblue;
+  font-size: 1.25rem;
+}
+
+label {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+button {
+  color: white;
+  padding: 1rem;
+  width: 9rem;
+  height: auto;
+  vertical-align: middle;
+  font-size: 1.25rem;
+} button:hover {
+  text-shadow: .1rem .15rem .1rem var(--darkweb);
+  box-shadow: inset -.2rem -.5rem .5rem .25rem grey;
+} button:active {
+  text-shadow: -.1rem -.15rem .1rem var(--darkweb);
+  box-shadow: inset .2rem .5rem .5rem .25rem grey;
 }
 
 /* Gameboard */

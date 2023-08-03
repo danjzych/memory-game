@@ -6,6 +6,7 @@ const COLORS = [
   "red", "blue", "green", "orange", "purple",
   "red", "blue", "green", "orange", "purple",
 ];
+let colors;
 
 let guesses = 0;
 let matches = 0;
@@ -17,10 +18,9 @@ if (JSON.parse(localStorage.getItem('bestScore'))) {
   bestScore = JSON.parse(localStorage.getItem('bestScore'));
   bestName = JSON.parse(localStorage.getItem('bestName'));
   document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
-}
+};
 
-
-let colors = shuffle(COLORS);
+let difficulty;
 
 
 /** Shuffle array items in-place and return shuffled array. */
@@ -47,9 +47,6 @@ function createCards(colors, gameBoard) {
 
   for (let color of colors) {
     const newDiv = document.createElement('div');
-    // const hint = document.createElement('p');
-    // hint.innerText = color
-    // newDiv.appendChild(hint);
 
     newDiv.addEventListener('click', event => {
 
@@ -166,6 +163,15 @@ function updateBest() {
 /* Function to "launch game" - Take in player name and difficulty, then hide menu and show gameboard */
 function startGame(gameBoard) {
 
+  //add event listeners to difficulty buttons if they haven't been added already
+  if (difficulty === undefined) {
+    document.querySelectorAll('input[name="difficulty"]').forEach(button => {
+      button.addEventListener('click', () => {
+        difficulty = button.value;
+      });
+    });
+  };
+
   const form = document.querySelector('form');
   form.addEventListener('submit', event => {
 
@@ -181,8 +187,10 @@ function startGame(gameBoard) {
     menu.classList.add('hide');
 
     gameBoard.classList.remove('hide');
+
+    colors = shuffle(COLORS);
     createCards(colors, gameBoard);
-  });
+  }, {once: true});
 
 }
 
@@ -203,20 +211,19 @@ function endGame(gameBoard) {
     const menu = document.querySelector('#menu');
     menu.classList.remove('hide');
 
-    while (gameBoard.firstChild) {
-      gameBoard.removeChild(gameBoard.lastChild);
-    }
-
     colors = shuffle(COLORS);
 
     guesses = 0;
     updateGuess();
+    matches = 0;
+
+    startGame(gameBoard);
   })
 
 }
 
-//easy, medium, and hard modes with 4, 10, and 20 cards
-//make colors random
+
+/* let's play the game! */
 
 document.addEventListener('DOMContentLoaded', () => {
 
