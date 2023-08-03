@@ -42,7 +42,6 @@ body {
 .evenly {
   display: flex;
   justify-content: space-evenly;
-  flex-wrap: row;
 }
 
 .hide {
@@ -104,32 +103,6 @@ h3 {
 h4 {
   margin: .75rem;
 }
-
-/* input, button {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: var(--office);
-  border-radius: .2rem;
-  text-align: center;
-  margin: .75rem 2rem 1rem;
-} input {
-  color: var(--lurking);
-  padding: .35rem;
-}
-
-button, input[type='radio'] {
-  color: white;
-  padding: 1rem;
-  width: 9rem;
-  height: 3rem;
-  vertical-align: middle;
-  font-size: 1.25rem;
-} button:hover {
-  cursor: pointer;
-  transform: rotate(1deg);
-} button:active {
-  opacity: .65;
-  transform: rotate(0deg);
-} */
 
 input, button {
   font-family: 'Courier New', Courier, monospace;
@@ -221,36 +194,20 @@ button {
 #gameContainer {
   margin: 2.5rem auto;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  height: calc(100vh - 302px)
 }
 
 #gameContainer div {
   border: 1px solid black;
   width: 100px;
   height: 100px;
-  margin: 20px;
-  display: inline-block;
+  margin: 1rem;
   border: 2px dashed var(--office);
   border-radius: 3px;
-}
-
-.red {
-  background-color: red;
-}
-
-.blue {
-  background-color: blue;
-}
-
-.purple {
-  background-color: purple;
-}
-
-.orange {
-  background-color: orange;
-}
-
-.green {
-  background-color: green;
+  flex: 0 0 12%;
 }
 
 

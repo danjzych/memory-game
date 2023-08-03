@@ -1,12 +1,9 @@
 "use strict";
 
-/** Memory game: find matching pairs of cards and flip both of them. */
-
-const COLORS = [
-  "red", "blue", "green", "orange", "purple",
-  "red", "blue", "green", "orange", "purple",
-];
-let colors;
+///////////////////////////////////
+//// SET STORAGE AND VARIABLES ////
+///////////////////////////////////
+let colors = [];
 
 let guesses = 0;
 let matches = 0;
@@ -28,15 +25,17 @@ let bestScores = {
 }
 if (JSON.parse(localStorage.getItem('bestScores'))) {
   bestScores = JSON.parse(localStorage.getItem('bestScores'));
-  // document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
   updateBest()
 };
 
 let currentDifficulty;
 
 
-/** Shuffle array items in-place and return shuffled array. */
+///////////////////////////////////
+////////// BUILD BOARD ////////////
+///////////////////////////////////
 
+/** Shuffle array items in-place and return shuffled array. */
 function shuffle(items) {
   // This algorithm does a "perfect shuffle", where there won't be any
   // statistical bias in the shuffle (many naive attempts to shuffle end up not
@@ -53,9 +52,35 @@ function shuffle(items) {
   return items;
 }
 
-/* Create card for every color in colors (each will appear twice)*/
+//generate RGB colors
+function generateColor() {
+  return `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
+}
 
+function createColorList(n) {
+
+  while (colors.length < n) {
+    const color = generateColor();
+
+    if (!colors.includes(color)) {
+      colors.push(color);
+      colors.push(color);
+    };
+  }
+}
+
+/* Create card for every color in colors (each will appear twice)*/
 function createCards(colors, gameBoard) {
+
+  if (currentDifficulty === 'Easy') {
+    createColorList(8)
+  } else if (currentDifficulty === 'Medium') {
+    createColorList(16)
+  } else if (currentDifficulty === 'Hard') {
+    createColorList(24)
+  }
+
+  colors = shuffle(colors);
 
   for (let color of colors) {
     const newDiv = document.createElement('div');
@@ -72,41 +97,42 @@ function createCards(colors, gameBoard) {
 }
 
 
-/** Variables to track turn status - color, if a card has been flipped, and number of flips to ensure no more than two cards are flipped */
+///////////////////////////////////
+////////// PLAYING GAME ///////////
+///////////////////////////////////
 
+/** Variables to track turn status - color, if a card has been flipped, and number of flips to ensure no more than two cards are flipped */
 let flippedColor = null;
 let flippedCount = 0;
+let firstFlip = null;
 
 
 /** Flip a card face-up. */
-
 function flipCard(card, color) {
-  card.className = color;
+  card.style.backgroundColor = color;
   flippedCount++;
 }
 
 
 /** Flip a card face-down. */
-
-function unFlipCard(card, color) {
-  card.classList.remove(color);
+function unFlipCard(card) {
+  card.removeAttribute('style');
 }
 
 
 /* reset turn */
-
 function reset() {
   flippedColor = null;
   flippedCount = 0;
+  firstFlip = null;
 }
 
 
 /** Handle clicking on a card. 'guesses' increments with each guess to track score. */
-
 function handleCardClick(card, color, gameBoard) {
 
   let clickStatus = false;
-  if (card.classList.contains(color)) {
+  if (card.style.backgroundColor === color) {
     clickStatus = true;
   } else if (flippedCount < 2 && clickStatus === false) {
 
@@ -114,6 +140,7 @@ function handleCardClick(card, color, gameBoard) {
 
       flipCard(card, color);
       flippedColor = color;
+      firstFlip = card;
 
     } else if (color === flippedColor) {
 
@@ -128,11 +155,9 @@ function handleCardClick(card, color, gameBoard) {
 
       flipCard(card, color);
 
-      let alreadyFlipped = document.getElementsByClassName(flippedColor);
-
       setTimeout(() => {
-                unFlipCard(card, color);
-                unFlipCard(alreadyFlipped[0], flippedColor);
+                unFlipCard(card);
+                unFlipCard(firstFlip);
                 reset();
               }, 1000);
       guesses++;
@@ -152,9 +177,9 @@ function handleWin(gameBoard) {
   if (colors.length / 2 === matches) {
 
     setTimeout(() => {
-      endGame(gameBoard);
       checkScore();
       updateBest();
+      endGame(gameBoard);
     }, 800);
 
   };
@@ -164,13 +189,11 @@ function handleWin(gameBoard) {
 //if current score is better than previous best score for this difficulty, update bestScore object in local storage
 function checkScore() {
 
-  console.log(bestScores[currentDifficulty])
-
   if (guesses < bestScores[currentDifficulty].score || bestScores[currentDifficulty].score === null) {
     bestScores[currentDifficulty].score = guesses;
     bestScores[currentDifficulty].name = playerName;
 
-    localStorage.setItem('bestScores', JSON.stringify(bestScores))
+    localStorage.setItem('bestScores', JSON.stringify(bestScores));
   };
 
 }
@@ -216,7 +239,6 @@ function startGame(gameBoard) {
 
     gameBoard.classList.remove('hide');
 
-    colors = shuffle(COLORS);
     createCards(colors, gameBoard);
   }, {once: true});
 
@@ -232,6 +254,16 @@ function endGame(gameBoard) {
   const winScreen = document.querySelector('#winScreen');
   winScreen.classList.remove('hide');
 
+  console.log(guesses);
+  console.log(bestScores[currentDifficulty].score)
+
+  const scoreReport = document.querySelector('.scoreReport');
+  if (guesses <= bestScores[currentDifficulty].score) {
+    scoreReport.innerText = 'You set the new best score for this difficulty - awesome!'
+  } else {
+    scoreReport.innerHTML = 'Unfortunately, you haven\'t beaten the best score...' + '<br>' + 'what a shame.';
+  }
+
   const playAgainButton = document.querySelector('#playAgain');
   playAgainButton.addEventListener('click', event => {
     winScreen.classList.add('hide');
@@ -239,7 +271,7 @@ function endGame(gameBoard) {
     const menu = document.querySelector('#menu');
     menu.classList.remove('hide');
 
-    colors = shuffle(COLORS);
+    colors = [];
 
     guesses = 0;
     updateGuess();
@@ -252,7 +284,6 @@ function endGame(gameBoard) {
 
 
 /* let's play the game! */
-
 document.addEventListener('DOMContentLoaded', () => {
 
   const gameBoard = document.getElementById("gameContainer");
