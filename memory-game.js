@@ -12,15 +12,27 @@ let guesses = 0;
 let matches = 0;
 let playerName = 'Unknown Player';
 
-let bestScore;
-let bestName;
-if (JSON.parse(localStorage.getItem('bestScore'))) {
-  bestScore = JSON.parse(localStorage.getItem('bestScore'));
-  bestName = JSON.parse(localStorage.getItem('bestName'));
-  document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
+let bestScores = {
+'Easy': {
+    'name': null,
+    'score': null
+  },
+  'Medium': {
+    'name': null,
+    'score': null
+  },
+  'Hard': {
+    'name': null,
+    'score': null
+  },
+}
+if (JSON.parse(localStorage.getItem('bestScores'))) {
+  bestScores = JSON.parse(localStorage.getItem('bestScores'));
+  // document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
+  updateBest()
 };
 
-let difficulty;
+let currentDifficulty;
 
 
 /** Shuffle array items in-place and return shuffled array. */
@@ -141,22 +153,38 @@ function handleWin(gameBoard) {
 
     setTimeout(() => {
       endGame(gameBoard);
+      checkScore();
       updateBest();
     }, 800);
 
   };
 }
 
+
+//if current score is better than previous best score for this difficulty, update bestScore object in local storage
+function checkScore() {
+
+  console.log(bestScores[currentDifficulty])
+
+  if (guesses < bestScores[currentDifficulty].score || bestScores[currentDifficulty].score === null) {
+    bestScores[currentDifficulty].score = guesses;
+    bestScores[currentDifficulty].name = playerName;
+
+    localStorage.setItem('bestScores', JSON.stringify(bestScores))
+  };
+
+}
+
+
+//if there is a best score, udpate it. If not, leave defauult inner text.
 function updateBest() {
 
-  if (guesses < bestScore || !bestScore) {
-    bestScore = guesses;
-    bestName = playerName;
+  for (const difficulty in bestScores) {
+    if (bestScores[difficulty].score !== null) {
+      document.getElementById(difficulty).innerText = `Best ${difficulty} Score: ${bestScores[difficulty].score}, ${bestScores[difficulty].name}`;
+    };
+  };
 
-    localStorage.setItem('bestScore', JSON.stringify(bestScore));
-    localStorage.setItem('bestName', JSON.stringify(playerName));
-    document.getElementById('bestScore').innerText = `Best Score: ${bestScore}, ${bestName}`;
-  }
 }
 
 
@@ -164,10 +192,10 @@ function updateBest() {
 function startGame(gameBoard) {
 
   //add event listeners to difficulty buttons if they haven't been added already
-  if (difficulty === undefined) {
+  if (currentDifficulty === undefined) {
     document.querySelectorAll('input[name="difficulty"]').forEach(button => {
       button.addEventListener('click', () => {
-        difficulty = button.value;
+        currentDifficulty = button.value;
       });
     });
   };
