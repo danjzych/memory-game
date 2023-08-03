@@ -202,12 +202,11 @@ button {
 
 #gameContainer div {
   border: 1px solid black;
-  width: 100px;
-  height: 100px;
+  width: 13vw;
+  height: 23vh;
   margin: 1rem;
   border: 2px dashed var(--office);
   border-radius: 3px;
-  flex: 0 0 12%;
 }
 
 

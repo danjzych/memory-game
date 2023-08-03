@@ -52,33 +52,33 @@ function shuffle(items) {
   return items;
 }
 
-//generate RGB colors
-function generateColor() {
-  return `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
-}
+//generate RGB colors of varying dissimilarity based on difficulty
+function createColorList() {
 
-function createColorList(n) {
+  while (colors.length < 12) {
 
-  while (colors.length < n) {
-    const color = generateColor();
+    let color;
+    if (currentDifficulty === 'Easy') {
+      color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
+    } else if (currentDifficulty === 'Medium') {
+      color = `rgba(184, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
+    } else if (currentDifficulty === 'Hard') {
+      color = `rgba(0, ${Math.floor(Math.random() * 255)}, 71, 0.7)`;
+    }
 
     if (!colors.includes(color)) {
       colors.push(color);
       colors.push(color);
     };
-  }
+
+  };
+
 }
 
 /* Create card for every color in colors (each will appear twice)*/
 function createCards(colors, gameBoard) {
 
-  if (currentDifficulty === 'Easy') {
-    createColorList(8)
-  } else if (currentDifficulty === 'Medium') {
-    createColorList(16)
-  } else if (currentDifficulty === 'Hard') {
-    createColorList(24)
-  }
+  createColorList();
 
   colors = shuffle(colors);
 
