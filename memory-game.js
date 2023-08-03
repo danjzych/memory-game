@@ -84,6 +84,7 @@ function createCards(colors, gameBoard) {
 
   for (let color of colors) {
     const newDiv = document.createElement('div');
+    console.log('test')
 
     newDiv.addEventListener('click', event => {
 
@@ -247,15 +248,11 @@ function startGame(gameBoard) {
 function endGame(gameBoard) {
 
   gameBoard.classList.add('hide');
-  while (gameBoard.firstChild) {
-    gameBoard.removeChild(gameBoard.lastChild);
-  }
+  gameBoard.innerHTML = '';
 
   const winScreen = document.querySelector('#winScreen');
   winScreen.classList.remove('hide');
 
-  console.log(guesses);
-  console.log(bestScores[currentDifficulty].score)
 
   const scoreReport = document.querySelector('.scoreReport');
   if (guesses <= bestScores[currentDifficulty].score) {
@@ -277,7 +274,7 @@ function endGame(gameBoard) {
     updateGuess();
     matches = 0;
 
-    startGame(gameBoard);
+    window.location.reload();
   })
 
 }
